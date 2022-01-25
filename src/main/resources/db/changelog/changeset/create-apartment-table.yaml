@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-apartment
+      author: Vadim
+      changes:
+        - createTable:
+            tableName: apartment
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: number
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: count_of_rooms
+                  type: integer
+              - column:
+                  name: date_of_cleaning
+                  type: date
+              - column:
+                  name: guests_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: quests_id
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: category_id

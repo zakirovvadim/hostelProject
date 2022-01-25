@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-guest
+      author: Vadim
+      changes:
+        - createTable:
+            tableName: guest
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: firstname
+                  type: varchar(255)
+              - column:
+                  name: lastname
+                  type: varchar(255)
+              - column:
+                  name: patronymic
+                  type: varchar(255)
+              - column:
+                  name: passport
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: image
+                  type: binary array
+              - column:
+                  name: birthdate
+                  type: date
+              - column:
+                  name: start_date
+                  type: date
+              - column:
+                  name: end_date
+                  type: date
+              - column:
+                  name: apartment_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: apartment_id

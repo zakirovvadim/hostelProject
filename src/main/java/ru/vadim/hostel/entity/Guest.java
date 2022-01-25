@@ -1,5 +1,6 @@
 package ru.vadim.hostel.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class Guest {
     private String firstname;
     private String lastname;
     private String patronymic;
-    private Integer passport;
+    private Long passport;
     @Lob
     private Byte[] image;
     private LocalDate birthdate;
@@ -23,5 +24,6 @@ public class Guest {
     private LocalDate endDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartment_id")
+    @JsonManagedReference
     private Apartment apartment;
 }

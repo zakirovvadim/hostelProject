@@ -1,5 +1,6 @@
 package ru.vadim.hostel.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Apartment {
     private Long number;
     private Integer countOfRooms;
     @OneToMany(mappedBy = "apartment")
+    @JsonBackReference
     private List<Guest> guests;
     private LocalDate dateOfCleaning;
     @OneToOne(fetch = FetchType.LAZY)

@@ -11,9 +11,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ApartmentDto {
+    private Long id;
     private Long number;
     private Integer countOfRooms;
-    private List<Guest> guests;
+    private List<GuestDto> guests;
     private LocalDate dateOfCleaning;
-    private Category category;
+    private CategoryDto category;
 }

@@ -8,9 +8,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ApartmentMapper {
-    List<ApartmentDto> map(List<Apartment> course);
+    List<ApartmentDto> map(List<Apartment> apartments);
 
-    ApartmentDto map(Apartment course);
+    ApartmentDto map(Apartment apartment);
 
     Apartment map(ApartmentDto dto);
 }
