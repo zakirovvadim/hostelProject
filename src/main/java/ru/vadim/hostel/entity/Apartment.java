@@ -2,12 +2,16 @@ package ru.vadim.hostel.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "apartment")
 public class Apartment {
@@ -16,7 +20,7 @@ public class Apartment {
     private Long id;
     private Long number;
     private Integer countOfRooms;
-    @OneToMany(mappedBy = "apartment")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "apartment")
     @JsonBackReference
     private List<Guest> guests;
     private LocalDate dateOfCleaning;

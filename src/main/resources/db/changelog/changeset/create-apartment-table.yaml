@@ -1,4 +1,8 @@
 databaseChangeLog:
+  - preConditions:
+      - tableExists:
+          onFail: warn
+          tableName: apartment
   - changeSet:
       id: create-apartment
       author: Vadim

@@ -24,7 +24,7 @@ public class GuestController {
 
     // Удаление гостя
     @DeleteMapping(value = "/{passportNumber}")
-    public ResponseEntity<?> deleteGuest(@PathVariable(name = "passportNumber") Integer passportNumber) {
+    public ResponseEntity<?> deleteGuest(@PathVariable(name = "passportNumber") Long passportNumber) {
         final boolean deleted = service.delete(passportNumber);
         return deleted
                 ? new ResponseEntity<>(HttpStatus.OK)
@@ -39,10 +39,21 @@ public class GuestController {
 
     // Редактирование гостя
     @PutMapping(value = "")
-    public ResponseEntity<?> updateGuest(GuestDto guestDto) {
+    public ResponseEntity<?> updateGuest(@RequestBody GuestDto guestDto) {
         GuestDto updated = service.updateGuest(guestDto);
         return updated != null
                 ? new ResponseEntity<>(updated, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
+    //Назначение гостю апартаментов
+    @PutMapping(value = "/appoint")
+    public ResponseEntity<GuestDto> appointApartment(@RequestParam(name = "passportNumber") Long passportNumber,
+                                             @RequestParam(name = "numberOfApartment") Long number) {
+        GuestDto guestDto = service.appointGuestToApartment(passportNumber, number);
+
+        return guestDto != null
+                ? new ResponseEntity<>(guestDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 

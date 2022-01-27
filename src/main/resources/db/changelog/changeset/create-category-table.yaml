@@ -1,4 +1,8 @@
 databaseChangeLog:
+  - preConditions:
+      - tableExists:
+          onFail: warn
+          tableName: category
   - changeSet:
       id: create-category
       author: Vadim

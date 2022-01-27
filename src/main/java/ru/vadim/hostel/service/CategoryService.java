@@ -9,6 +9,7 @@ import ru.vadim.hostel.mapper.CategoryMapper;
 import ru.vadim.hostel.repository.CategoryRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +30,9 @@ public class CategoryService {
 
     public List<CategoryDto> getAllCategories() {
         return categoryMapper.map(repository.findAll());
+    }
+
+    public CategoryDto getCategoryById(Long id) {
+        return categoryMapper.map(repository.getById(id));
     }
 }

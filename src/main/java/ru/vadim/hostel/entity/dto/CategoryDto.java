@@ -1,9 +1,11 @@
 package ru.vadim.hostel.entity.dto;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class CategoryDto {
     private Long id;

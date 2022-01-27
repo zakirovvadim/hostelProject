@@ -1,4 +1,8 @@
 databaseChangeLog:
+  - preConditions:
+      - tableExists:
+          onFail: warn
+          tableName: guest
   - changeSet:
       id: create-guest
       author: Vadim

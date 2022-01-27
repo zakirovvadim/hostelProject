@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vadim.hostel.entity.dto.ApartmentDto;
-import ru.vadim.hostel.entity.dto.CategoryDto;
 import ru.vadim.hostel.entity.dto.GuestDto;
-import ru.vadim.hostel.mapper.CategoryMapper;
-import ru.vadim.hostel.mapper.GuestMapper;
 import ru.vadim.hostel.service.ApartmentService;
 
 import java.util.List;
@@ -18,8 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApartmentController {
     private final ApartmentService service;
-    private final GuestMapper guestMapper;
-    private final CategoryMapper categoryMapper;
 
     // Добавление апартамента
     @PostMapping(value = "")
@@ -40,15 +35,14 @@ public class ApartmentController {
 
     // Получение гостей апартамента
     @GetMapping(value = "/guests")
-    public List<GuestDto> getGuestOfApartment(@PathVariable(name = "number") Long number) {
-        ApartmentDto dto = service.getApartmentByNumber(number);
-        List<GuestDto> guestDtoList = dto.getGuests();
-        return guestDtoList;
+    public List<GuestDto> getGuestOfApartment(@RequestParam(name = "number") Long number) {
+        List<GuestDto> list = service.getApartmentByNumber(number).getGuests();
+        return list;
     }
 
     // Получение количества помещений (в апартаменте)
     @GetMapping(value = "/rooms")
-    public ResponseEntity<?> getCountOfRooms(@PathVariable(name = "number") Long number) {
+    public ResponseEntity<?> getCountOfRooms(@RequestParam(name = "number") Long number) {
         ApartmentDto dto = service.getApartmentByNumber(number);
         Integer countOfRooms = dto.getCountOfRooms();
         return countOfRooms != null
@@ -58,12 +52,13 @@ public class ApartmentController {
 
     // Назначение категории апартаменту
     @PutMapping(value = "")
-    public ResponseEntity<?> appointCategory(@RequestBody CategoryDto categoryDto,
-                                             @PathVariable(name = "numberOfApartment") Long number) {
-        ApartmentDto dto = service.getApartmentByNumber(number);
-        dto.setCategory(categoryDto);
-        service.save(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> appointCategory(@RequestParam(name = "idOfCategory") Long id,
+                                             @RequestParam(name = "numberOfApartment") Long number) {
+        ApartmentDto savedApartmentDto = service.appointCategoryToApartment(number, id);
+
+        return savedApartmentDto != null
+                ? new ResponseEntity<>(savedApartmentDto, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
 
