@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vadim.hostel.entity.Guest;
 import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.service.GuestService;
 
@@ -48,13 +49,12 @@ public class GuestController {
 
     //Назначение гостю апартаментов
     @PutMapping(value = "/appoint")
-    public ResponseEntity<GuestDto> appointApartment(@RequestParam(name = "passportNumber") Long passportNumber,
-                                             @RequestParam(name = "numberOfApartment") Long number) {
-        GuestDto guestDto = service.appointGuestToApartment(passportNumber, number);
+    public ResponseEntity<Guest> appointApartment(@RequestParam(name = "passportNumber") Long passportNumber,
+                                                  @RequestParam(name = "numberOfApartment") Long number) {
+        Guest guestDto = service.appointGuestToApartment(passportNumber, number);
 
         return guestDto != null
                 ? new ResponseEntity<>(guestDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-
 }

@@ -49,3 +49,4 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     foreignKeyName: apartment_id
+                    references: apartment(id)

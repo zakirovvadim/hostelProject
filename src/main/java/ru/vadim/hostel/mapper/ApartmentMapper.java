@@ -14,4 +14,4 @@ public interface ApartmentMapper {
     @Mapping(target = "guests", ignore = true)
     ApartmentDto map(Apartment apartment);
     Apartment map(ApartmentDto dto);
-}
+ }

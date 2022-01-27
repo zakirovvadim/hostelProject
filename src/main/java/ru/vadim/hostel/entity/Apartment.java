@@ -1,17 +1,14 @@
 package ru.vadim.hostel.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "apartment")
 public class Apartment {
@@ -24,7 +21,8 @@ public class Apartment {
     @JsonBackReference
     private List<Guest> guests;
     private LocalDate dateOfCleaning;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JsonManagedReference
     private Category category;
 }

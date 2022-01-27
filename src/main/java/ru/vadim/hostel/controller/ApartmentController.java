@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.vadim.hostel.entity.dto.ApartmentDto;
 import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.service.ApartmentService;
+import ru.vadim.hostel.service.GuestService;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApartmentController {
     private final ApartmentService service;
+    private final GuestService guestService;
 
     // Добавление апартамента
     @PostMapping(value = "")
@@ -36,8 +38,7 @@ public class ApartmentController {
     // Получение гостей апартамента
     @GetMapping(value = "/guests")
     public List<GuestDto> getGuestOfApartment(@RequestParam(name = "number") Long number) {
-        List<GuestDto> list = service.getApartmentByNumber(number).getGuests();
-        return list;
+        return guestService.getGuestsFromApart(number);
     }
 
     // Получение количества помещений (в апартаменте)
@@ -60,6 +61,4 @@ public class ApartmentController {
                 ? new ResponseEntity<>(savedApartmentDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-
-
 }

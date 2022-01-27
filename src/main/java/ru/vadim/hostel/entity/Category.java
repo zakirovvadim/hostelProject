@@ -1,15 +1,13 @@
 package ru.vadim.hostel.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "category")
 public class Category {
     @Id
@@ -17,4 +15,7 @@ public class Category {
     private Long id;
     private String name;
     private String description;
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "category")
+    @JsonBackReference
+    private List<Apartment> apartment;
 }

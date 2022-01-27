@@ -8,6 +8,7 @@ import ru.vadim.hostel.entity.dto.CategoryDto;
 import ru.vadim.hostel.exception.NoEntityException;
 import ru.vadim.hostel.mapper.ApartmentMapper;
 import ru.vadim.hostel.mapper.CategoryMapper;
+import ru.vadim.hostel.mapper.GuestMapper;
 import ru.vadim.hostel.repository.ApartmentRepository;
 
 @Service
@@ -15,6 +16,7 @@ import ru.vadim.hostel.repository.ApartmentRepository;
 public class ApartmentService {
     private final ApartmentRepository repository;
     private final ApartmentMapper mapper;
+    private final GuestMapper guestMapper;
     private final CategoryMapper categoryMapper;
     private final CategoryService categoryService;
 
@@ -42,4 +44,5 @@ public class ApartmentService {
         apartment.setCategory(categoryMapper.map(categoryDto));
         return mapper.map(repository.save(apartment));
     }
+
 }

@@ -37,5 +37,4 @@ public class CategoryController {
     public List<CategoryDto> getAllCategories() {
         return service.getAllCategories();
     }
-
 }

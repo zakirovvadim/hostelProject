@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vadim.hostel.entity.Apartment;
 import ru.vadim.hostel.entity.Guest;
-import ru.vadim.hostel.entity.dto.ApartmentDto;
 import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.exception.NoEntityException;
 import ru.vadim.hostel.mapper.ApartmentMapper;
 import ru.vadim.hostel.mapper.GuestMapper;
 import ru.vadim.hostel.repository.GuestRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,24 +43,15 @@ public class GuestService {
         return guestMapper.map(repository.save(updatedGuest));
     }
 
+    public List<GuestDto> getGuestsFromApart(Long apartmentNumber) {
+        List<Guest> guestDtoList = repository.findGuestByApartmentNumber(apartmentNumber).orElseThrow(() -> new NoEntityException(apartmentNumber));
+        return guestMapper.map(guestDtoList);
+    }
 
-    public GuestDto appointGuestToApartment(Long passportNumber, Long apartmentNumber) {
-
+    public Guest appointGuestToApartment(Long passportNumber, Long apartmentNumber) {
         Guest guest = repository.findGuestByPassport(passportNumber).orElseThrow(() -> new NoEntityException(passportNumber));
-        ApartmentDto apartmentDto = apartmentService.getApartmentByNumber(apartmentNumber);
-
-        guest.setApartment(apartmentMapper.map(apartmentDto));
-
-        Apartment apartment = apartmentMapper.map(apartmentDto);
-
-        List<Guest> guestList = apartment.getGuests();
-        if (guestList != null) {
-            guestList.add(guest);
-        } else {
-            apartment.setGuests(new ArrayList<>());
-            apartment.getGuests().add(guest);
-        }
-        apartmentService.save(apartmentMapper.map(apartment));
-        return guestMapper.map(repository.save(guest));
+        Apartment apartment = apartmentMapper.map(apartmentService.getApartmentByNumber(apartmentNumber));
+        guest.setApartment(apartment);
+        return repository.save(guest);
     }
 }
