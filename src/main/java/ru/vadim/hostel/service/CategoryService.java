@@ -21,13 +21,20 @@ public class CategoryService {
         return categoryMapper.map(repository.save(category));
     }
 
-    public boolean deleteCategory(Long id) {
+    public void deleteCategory(Long id) {
         Category category = repository.findCategoryById(id).orElseThrow(() -> new NoEntityException(id));
         repository.deleteById(category.getId());
-        return true;
     }
 
     public List<CategoryDto> getAllCategories() {
         return categoryMapper.map(repository.findAll());
+    }
+
+    public CategoryDto getCategoryById(Long id) {
+        return categoryMapper.map(repository.findById(id).orElseThrow(() -> new NoEntityException(id)));
+    }
+
+    public CategoryDto findByName(String name) {
+        return categoryMapper.map(repository.findCategoryByName(name).orElse(new Category()));
     }
 }

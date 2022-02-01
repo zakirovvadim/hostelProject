@@ -2,9 +2,11 @@ package ru.vadim.hostel.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.vadim.hostel.entity.Apartment;
 import ru.vadim.hostel.entity.Guest;
 import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.exception.NoEntityException;
+import ru.vadim.hostel.mapper.ApartmentMapper;
 import ru.vadim.hostel.mapper.GuestMapper;
 import ru.vadim.hostel.repository.GuestRepository;
 
@@ -16,12 +18,15 @@ public class GuestService {
     private final GuestRepository repository;
     private final GuestMapper guestMapper;
 
+    private final ApartmentService apartmentService;
+    private final ApartmentMapper apartmentMapper;
+
     public GuestDto save(GuestDto guestDto) {
         Guest guest = guestMapper.map(guestDto);
         return guestMapper.map(repository.save(guest));
     }
 
-    public boolean delete(Integer passportNumber) {
+    public boolean delete(Long passportNumber) {
         Guest guest = repository.findGuestByPassport(passportNumber).orElseThrow(() -> new NoEntityException(passportNumber));
         repository.deleteById(guest.getId());
         return true;
@@ -36,5 +41,17 @@ public class GuestService {
         Guest updatedGuest = guestMapper.map(guestDto);
         updatedGuest.setId(currentGuest.getId());
         return guestMapper.map(repository.save(updatedGuest));
+    }
+
+    public List<GuestDto> getGuestsFromApart(Long apartmentNumber) {
+        List<Guest> guestDtoList = repository.findGuestByApartmentNumber(apartmentNumber).orElseThrow(() -> new NoEntityException(apartmentNumber));
+        return guestMapper.map(guestDtoList);
+    }
+
+    public Guest appointGuestToApartment(Long passportNumber, Long apartmentNumber) {
+        Guest guest = repository.findGuestByPassport(passportNumber).orElseThrow(() -> new NoEntityException(passportNumber));
+        Apartment apartment = apartmentMapper.map(apartmentService.getApartmentByNumber(apartmentNumber));
+        guest.setApartment(apartment);
+        return repository.save(guest);
     }
 }

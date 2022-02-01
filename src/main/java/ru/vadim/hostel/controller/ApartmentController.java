@@ -5,11 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vadim.hostel.entity.dto.ApartmentDto;
-import ru.vadim.hostel.entity.dto.CategoryDto;
 import ru.vadim.hostel.entity.dto.GuestDto;
-import ru.vadim.hostel.mapper.CategoryMapper;
-import ru.vadim.hostel.mapper.GuestMapper;
 import ru.vadim.hostel.service.ApartmentService;
+import ru.vadim.hostel.service.GuestService;
 
 import java.util.List;
 
@@ -18,53 +16,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApartmentController {
     private final ApartmentService service;
-    private final GuestMapper guestMapper;
-    private final CategoryMapper categoryMapper;
+    private final GuestService guestService;
 
     // Добавление апартамента
     @PostMapping(value = "")
     public ResponseEntity<ApartmentDto> saveApartment(@RequestBody ApartmentDto dto) {
-        ApartmentDto savedApartment = service.save(dto);
-        return new ResponseEntity<>(savedApartment, HttpStatus.OK);
+        return new ResponseEntity<>(service.save(dto), HttpStatus.OK);
     }
 
     // Удаление апартамента
     @DeleteMapping(value = "/{number}")
-    public ResponseEntity<?> deleteApartmentWithNumber(@PathVariable(name = "number") Long number) {
-        final boolean deleted = service.delete(number);
-
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> deleteApartmentWithNumber(@PathVariable(name = "number") Long number) {
+        service.delete(number);
+        return ResponseEntity.ok().build();
     }
 
     // Получение гостей апартамента
     @GetMapping(value = "/guests")
-    public List<GuestDto> getGuestOfApartment(@PathVariable(name = "number") Long number) {
-        ApartmentDto dto = service.getApartmentByNumber(number);
-        List<GuestDto> guestDtoList = dto.getGuests();
-        return guestDtoList;
+    public ResponseEntity<List<GuestDto>> getGuestOfApartment(@RequestParam(name = "number") Long number) {
+        return new ResponseEntity<>(guestService.getGuestsFromApart(number), HttpStatus.OK);
     }
 
     // Получение количества помещений (в апартаменте)
     @GetMapping(value = "/rooms")
-    public ResponseEntity<?> getCountOfRooms(@PathVariable(name = "number") Long number) {
-        ApartmentDto dto = service.getApartmentByNumber(number);
-        Integer countOfRooms = dto.getCountOfRooms();
-        return countOfRooms != null
-                ? new ResponseEntity<>(countOfRooms, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Integer> getCountOfRooms(@RequestParam(name = "number") Long number) {
+        return new ResponseEntity<>(service.getApartmentByNumber(number).getCountOfRooms(), HttpStatus.OK);
     }
 
     // Назначение категории апартаменту
     @PutMapping(value = "")
-    public ResponseEntity<?> appointCategory(@RequestBody CategoryDto categoryDto,
-                                             @PathVariable(name = "numberOfApartment") Long number) {
-        ApartmentDto dto = service.getApartmentByNumber(number);
-        dto.setCategory(categoryDto);
-        service.save(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ApartmentDto> appointCategory(@RequestParam(name = "idOfCategory") Long id,
+                                             @RequestParam(name = "numberOfApartment") Long number) {
+        return new ResponseEntity<>(service.appointCategoryToApartment(number, id), HttpStatus.OK);
     }
-
-
 }

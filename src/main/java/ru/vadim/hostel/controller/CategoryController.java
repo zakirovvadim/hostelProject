@@ -19,17 +19,14 @@ public class CategoryController {
     // Создание категории
     @PostMapping(value = "")
     public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
-        CategoryDto savedCategory = service.save(categoryDto);
-        return new ResponseEntity<>(savedCategory, HttpStatus.OK);
+        return new ResponseEntity<>(service.save(categoryDto), HttpStatus.OK);
     }
 
     //Удаление категории
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable(name = "id") Long id) {
-        final boolean deleted = service.deleteCategory(id);
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public ResponseEntity<Void> deleteCategory(@PathVariable(name = "id") Long id) {
+        service.deleteCategory(id);
+        return ResponseEntity.ok().build();
     }
 
     //Получение списка категорий
@@ -37,5 +34,4 @@ public class CategoryController {
     public List<CategoryDto> getAllCategories() {
         return service.getAllCategories();
     }
-
 }

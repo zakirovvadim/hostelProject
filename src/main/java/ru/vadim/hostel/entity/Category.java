@@ -1,9 +1,13 @@
 package ru.vadim.hostel.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.REFRESH;
 
 @Entity
 @Data
@@ -14,4 +18,7 @@ public class Category {
     private Long id;
     private String name;
     private String description;
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL,mappedBy = "category")
+    @JsonBackReference
+    private List<Apartment> apartment;
 }

@@ -1,4 +1,8 @@
 databaseChangeLog:
+#  - preConditions:
+#      - tableExists:
+#          onFail: warn
+#          tableName: apartment
   - changeSet:
       id: create-apartment
       author: Vadim
@@ -18,6 +22,7 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: count_of_rooms
                   type: integer
@@ -25,12 +30,8 @@ databaseChangeLog:
                   name: date_of_cleaning
                   type: date
               - column:
-                  name: guests_id
-                  type: bigint
-                  constraints:
-                    foreignKeyName: quests_id
-              - column:
                   name: category_id
                   type: bigint
                   constraints:
                     foreignKeyName: category_id
+                    references: category(id)
