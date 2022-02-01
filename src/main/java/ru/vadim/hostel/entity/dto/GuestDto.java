@@ -1,13 +1,11 @@
 package ru.vadim.hostel.entity.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import ru.vadim.hostel.entity.Apartment;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 @Getter
 @Setter

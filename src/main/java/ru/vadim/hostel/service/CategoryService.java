@@ -9,7 +9,6 @@ import ru.vadim.hostel.mapper.CategoryMapper;
 import ru.vadim.hostel.repository.CategoryRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +21,9 @@ public class CategoryService {
         return categoryMapper.map(repository.save(category));
     }
 
-    public boolean deleteCategory(Long id) {
+    public void deleteCategory(Long id) {
         Category category = repository.findCategoryById(id).orElseThrow(() -> new NoEntityException(id));
         repository.deleteById(category.getId());
-        return true;
     }
 
     public List<CategoryDto> getAllCategories() {
@@ -33,6 +31,10 @@ public class CategoryService {
     }
 
     public CategoryDto getCategoryById(Long id) {
-        return categoryMapper.map(repository.getById(id));
+        return categoryMapper.map(repository.findById(id).orElseThrow(() -> new NoEntityException(id)));
+    }
+
+    public CategoryDto findByName(String name) {
+        return categoryMapper.map(repository.findCategoryByName(name).orElse(new Category()));
     }
 }

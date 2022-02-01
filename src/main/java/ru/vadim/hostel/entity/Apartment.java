@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
+
 @Data
 @Entity
 @Table(name = "apartment")
@@ -17,12 +19,12 @@ public class Apartment {
     private Long id;
     private Long number;
     private Integer countOfRooms;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "apartment")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, MERGE}, mappedBy = "apartment")
     @JsonBackReference
     private List<Guest> guests;
     private LocalDate dateOfCleaning;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "category_id")
     @JsonManagedReference
     private Category category;
 }

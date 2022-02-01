@@ -6,6 +6,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.REFRESH;
+
 @Entity
 @Data
 @Table(name = "category")
@@ -15,7 +18,7 @@ public class Category {
     private Long id;
     private String name;
     private String description;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL,mappedBy = "category")
     @JsonBackReference
     private List<Apartment> apartment;
 }

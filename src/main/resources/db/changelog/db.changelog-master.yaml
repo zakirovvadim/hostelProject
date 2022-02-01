@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-apartment-table.yaml
   - include:
       file: db/changelog/changeset/create-guest-table.yaml
+  - include:
+      file: db/changelog/changeset/create-user-table.yaml

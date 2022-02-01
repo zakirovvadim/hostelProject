@@ -10,7 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ApartmentMapper {
     List<ApartmentDto> map(List<Apartment> apartments);
-
     @Mapping(target = "guests", ignore = true)
     ApartmentDto map(Apartment apartment);
     Apartment map(ApartmentDto dto);

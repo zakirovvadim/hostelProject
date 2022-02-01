@@ -2,18 +2,18 @@ databaseChangeLog:
 #  - preConditions:
 #      - tableExists:
 #          onFail: warn
-#          tableName: category
+#          tableName: usr
   - changeSet:
-      id: create-category
+      id: create-usr
       author: Vadim
       changes:
         - createTable:
-            tableName: category
+            tableName: usr
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: varchar(255)
+                  # autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -21,5 +21,5 @@ databaseChangeLog:
                   name: name
                   type: varchar(255)
               - column:
-                  name: description
+                  name: email
                   type: varchar(255)

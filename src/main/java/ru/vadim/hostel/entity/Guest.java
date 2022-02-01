@@ -20,9 +20,7 @@ public class Guest {
     @Lob
     private Byte[] image;
     private LocalDate birthdate;
-    @Column(name = "start_date")
     private LocalDate startDate;
-    @Column(name = "end_date")
     private LocalDate endDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartment_id")
