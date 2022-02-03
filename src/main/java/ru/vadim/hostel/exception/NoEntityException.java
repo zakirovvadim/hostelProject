@@ -6,4 +6,7 @@ public class NoEntityException extends RuntimeException {
     public NoEntityException(long number) {
         super("The attribute with number: " + number + " isn't exist");
     }
+    public NoEntityException(String number) {
+        super("The attribute with number: " + number + " isn't exist");
+    }
 }
