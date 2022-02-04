@@ -6,7 +6,6 @@
 //import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.web.bind.annotation.*;
 //import ru.vadim.hostel.entity.User;
-//import ru.vadim.hostel.entity.dto.GuestDto;
 //import ru.vadim.hostel.service.UserService;
 //
 //import java.util.List;
@@ -15,24 +14,36 @@
 //@RestController
 //@RequiredArgsConstructor
 //public class UserController {
-//    private UserService userService;
+//    private final UserService service;
 //
 //    @GetMapping(value = "")
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    public List<User> userList() {
-//        return userService.findAllUsers();
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public List<User> findAllUser() {
+//        return service.findAllUsers();
+//    }
+//
+//    @GetMapping(value = "")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public User findUser(@PathVariable(name = "email") String email) {
+//        return service.findUserByEmail(email);
 //    }
 //
 //    @DeleteMapping(value = "/{email}")
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('user:delete')")
 //    public void deleteUser(@PathVariable(name = "email") String email) {
-//        userService.deleteUser(email);
+//        service.deleteUser(email);
 //    }
 //
 //    @PutMapping(value = "")
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('user:update')")
 //    public ResponseEntity<User> updateGuest(@RequestBody User user) {
-//        return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+//        return new ResponseEntity<>(service.updateUser(user), HttpStatus.OK);
+//    }
+//
+//    @PostMapping(value = "")
+//    @PreAuthorize("hasAuthority('user:create')")
+//    public User createUser(@RequestBody User user) {
+//        return service.createUser(user);
 //    }
 //
 //}

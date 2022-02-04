@@ -7,9 +7,7 @@
 //import java.util.Optional;
 //
 //@Repository
-//public interface UserDetailsRepository extends JpaRepository<User, String> {
-//
-//    User findByUsername(String username);
+//public interface UserRepository extends JpaRepository<User, String> {
 //
 //    Optional<User> findByEmail(String email);
 //}

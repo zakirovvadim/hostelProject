@@ -1,4 +1,4 @@
-package ru.vadim.hostel.config;
+package ru.vadim.hostel.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package ru.vadim.hostel.config;
+package ru.vadim.hostel.security;
 
 public enum ApplicationUserPermission {
     APARTMENT_READ("apartment:read"),
@@ -14,9 +14,13 @@ public enum ApplicationUserPermission {
     GUEST_CREATE("guest:create"),
     GUEST_DELETE("guest:delete"),
     MANAGER_CREATE("manager:create"),
-    MANAGER_READ("manager:create"),
-    MANAGER_UPDATE("manager:create"),
-    MANAGER_DELETE("manager:create");
+    MANAGER_READ("manager:read"),
+    MANAGER_UPDATE("manager:update"),
+    MANAGER_DELETE("manager:delete"),
+    USER_CREATE("user:create"),
+    USER_READ("user:read"),
+    USER_UPDATE("user:update"),
+    USER_DELETE("user:delete");
 
     private final String permission;
 

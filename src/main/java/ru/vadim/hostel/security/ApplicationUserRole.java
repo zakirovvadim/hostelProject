@@ -1,4 +1,4 @@
-package ru.vadim.hostel.config;
+package ru.vadim.hostel.security;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ru.vadim.hostel.config.ApplicationUserPermission.*;
+import static ru.vadim.hostel.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
     MANAGER(Sets.newHashSet(
