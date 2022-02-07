@@ -32,6 +32,3 @@ databaseChangeLog:
               - column:
                   name: category_id
                   type: bigint
-                  constraints:
-                    foreignKeyName: category_id
-                    references: category(id)

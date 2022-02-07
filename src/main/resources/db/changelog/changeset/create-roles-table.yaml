@@ -1,14 +1,14 @@
 databaseChangeLog:
-#  - preConditions:
-#      - tableExists:
-#          onFail: warn
-#          tableName: usr
+  #  - preConditions:
+  #      - tableExists:
+  #          onFail: warn
+  #          tableName: usr
   - changeSet:
-      id: create-usr
+      id: create-roles
       author: Vadim
       changes:
         - createTable:
-            tableName: usr
+            tableName: roles
             columns:
               - column:
                   name: id
@@ -19,10 +19,4 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: name
-                  type: varchar(255)
-              - column:
-                  name: username
-                  type: varchar(255)
-              - column:
-                  name: password
                   type: varchar(255)

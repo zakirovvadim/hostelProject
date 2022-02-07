@@ -19,38 +19,38 @@ public class GuestController {
 
     // Добавление гостя
     @PostMapping(value = "")
-    @PreAuthorize("hasAuthority('guest:create')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<GuestDto> saveGuest(@RequestBody GuestDto guestDto) {
         return new ResponseEntity<>(service.save(guestDto), HttpStatus.OK);
     }
 
     // Удаление гостя
     @DeleteMapping(value = "/{passportNumber}")
-    @PreAuthorize("hasAuthority('guest:delete')")
-    public ResponseEntity<Void> deleteGuest(@PathVariable(name = "passportNumber") Long passportNumber) {
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Void> deleteGuest(@PathVariable(name = "passportNumber") String passportNumber) {
         service.delete(passportNumber);
         return ResponseEntity.ok().build();
     }
 
     //Получение списка гостей
     @GetMapping(value = "")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public List<GuestDto> getGuests() {
         return service.getGuests();
     }
 
     // Редактирование гостя
     @PutMapping(value = "")
-    @PreAuthorize("hasAuthority('guest:update')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<GuestDto> updateGuest(@RequestBody GuestDto guestDto) {
         return new ResponseEntity<>(service.updateGuest(guestDto), HttpStatus.OK);
     }
 
     //Назначение гостю апартаментов
     @PutMapping(value = "/appoint")
-    @PreAuthorize("hasAuthority('guest:update')")
-    public ResponseEntity<Guest> appointApartment(@RequestParam(name = "passportNumber") Long passportNumber,
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<GuestDto> appointApartment(@RequestParam(name = "passportNumber") String passportNumber,
                                                   @RequestParam(name = "numberOfApartment") Long number) {
-        return new ResponseEntity<>(service.appointGuestToApartment(passportNumber, number), HttpStatus.OK);
+        return new ResponseEntity<GuestDto>(service.appointGuestToApartment(passportNumber, number), HttpStatus.OK);
     }
 }

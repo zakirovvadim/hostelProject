@@ -2,6 +2,7 @@ package ru.vadim.hostel.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,9 +17,9 @@ public class Guest {
     private String firstname;
     private String lastname;
     private String patronymic;
-    private Long passport;
-    @Lob
-    private Byte[] image;
+    private String passport;
+    @Type(type="org.hibernate.type.BinaryType")
+    private byte[] image;
     private LocalDate birthdate;
     private LocalDate startDate;
     private LocalDate endDate;

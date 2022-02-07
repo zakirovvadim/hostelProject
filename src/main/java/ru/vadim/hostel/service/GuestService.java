@@ -23,10 +23,11 @@ public class GuestService {
 
     public GuestDto save(GuestDto guestDto) {
         Guest guest = guestMapper.map(guestDto);
-        return guestMapper.map(repository.save(guest));
+        repository.save(guest);
+        return guestMapper.map(guest);
     }
 
-    public boolean delete(Long passportNumber) {
+    public boolean delete(String passportNumber) {
         Guest guest = repository.findGuestByPassport(passportNumber).orElseThrow(() -> new NoEntityException(passportNumber));
         repository.deleteById(guest.getId());
         return true;
@@ -48,10 +49,12 @@ public class GuestService {
         return guestMapper.map(guestDtoList);
     }
 
-    public Guest appointGuestToApartment(Long passportNumber, Long apartmentNumber) {
+    public GuestDto appointGuestToApartment(String passportNumber, Long apartmentNumber) {
         Guest guest = repository.findGuestByPassport(passportNumber).orElseThrow(() -> new NoEntityException(passportNumber));
         Apartment apartment = apartmentMapper.map(apartmentService.getApartmentByNumber(apartmentNumber));
         guest.setApartment(apartment);
-        return repository.save(guest);
+        GuestDto dto = guestMapper.map(guest);
+        dto.setApartment(apartmentMapper.map(apartment));
+        return save(dto);
     }
 }

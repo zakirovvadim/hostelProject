@@ -19,14 +19,14 @@ public class CategoryController {
 
     // Создание категории
     @PostMapping(value = "")
-    @PreAuthorize("hasAuthority('category:create')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
         return new ResponseEntity<>(service.save(categoryDto), HttpStatus.OK);
     }
 
     //Удаление категории
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('category:delete')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCategory(@PathVariable(name = "id") Long id) {
         service.deleteCategory(id);
         return ResponseEntity.ok().build();
@@ -34,7 +34,7 @@ public class CategoryController {
 
     //Получение списка категорий
     @GetMapping(value = "")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public List<CategoryDto> getAllCategories() {
         return service.getAllCategories();
     }

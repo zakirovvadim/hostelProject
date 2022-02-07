@@ -21,14 +21,14 @@ public class ApartmentController {
 
     // Добавление апартамента
     @PostMapping(value = "")
-    @PreAuthorize("hasAuthority('apartment:create')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApartmentDto> saveApartment(@RequestBody ApartmentDto dto) {
         return new ResponseEntity<>(service.save(dto), HttpStatus.OK);
     }
 
     // Удаление апартамента
     @DeleteMapping(value = "/{number}")
-    @PreAuthorize("hasAuthority('apartment:delete')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteApartmentWithNumber(@PathVariable(name = "number") Long number) {
         service.delete(number);
         return ResponseEntity.ok().build();
@@ -36,21 +36,21 @@ public class ApartmentController {
 
     // Получение гостей апартамента
     @GetMapping(value = "/guests")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<GuestDto>> getGuestOfApartment(@RequestParam(name = "number") Long number) {
         return new ResponseEntity<>(guestService.getGuestsFromApart(number), HttpStatus.OK);
     }
 
     // Получение количества помещений (в апартаменте)
     @GetMapping(value = "/rooms")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<Integer> getCountOfRooms(@RequestParam(name = "number") Long number) {
         return new ResponseEntity<>(service.getApartmentByNumber(number).getCountOfRooms(), HttpStatus.OK);
     }
 
     // Назначение категории апартаменту
     @PutMapping(value = "")
-    @PreAuthorize("hasAuthority('apartment:update')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<ApartmentDto> appointCategory(@RequestParam(name = "idOfCategory") Long id,
                                              @RequestParam(name = "numberOfApartment") Long number) {
         return new ResponseEntity<>(service.appointCategoryToApartment(number, id), HttpStatus.OK);
