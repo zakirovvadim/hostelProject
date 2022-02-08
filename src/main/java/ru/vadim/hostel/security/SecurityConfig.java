@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,6 +26,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private static final String[] PUBLIC_URLS = {
+            "/v2/api-docs/**",
+            "/swagger.json",
+            "/swagger-ui.html",
+            "/swagger-resources/**",
+            "/webjars/**"
+    };
+
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -42,7 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                .antMatchers("/api/login/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .and()
+                .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
@@ -50,6 +61,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(customAuthenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+    @Override
+    public void configure(WebSecurity web)  {
+        web.ignoring().antMatchers("/v3/api-docs",
+                "/swagger-ui.html",
+                "/swagger-ui/**");
+    }
+
 
     @Bean
     @Override

@@ -34,7 +34,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: image
-                  type: longblob
+                  type: binary array
               - column:
                   name: birthdate
                   type: date
@@ -48,5 +48,5 @@ databaseChangeLog:
                   name: apartment_id
                   type: bigint
                   constraints:
-                    foreignKeyName: apartment_id
+                    foreignKeyName: fk_apartment_id
                     references: apartment(id)

@@ -25,19 +25,19 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @PostMapping("/users/save")
+    @PostMapping("/users")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok().body(userService.saveUser(userDto));
     }
 
-    @PostMapping("/role/save")
+    @PostMapping("/role")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<RoleDto> saveRole(@RequestBody RoleDto roleDto) {
         return ResponseEntity.ok().body(userService.saveRole(roleDto));
     }
 
-    @PostMapping("/role/addToUser")
+    @PostMapping("/role/to-user")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form) {
         userService.addRoleToUser(form.getUsername(), form.getRoleName());

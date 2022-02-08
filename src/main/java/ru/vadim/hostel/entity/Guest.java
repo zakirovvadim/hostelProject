@@ -18,7 +18,8 @@ public class Guest {
     private String lastname;
     private String patronymic;
     private String passport;
-    @Type(type="org.hibernate.type.BinaryType")
+    @Lob
+    //@Type(type="org.hibernate.type.BinaryType")
     private byte[] image;
     private LocalDate birthdate;
     private LocalDate startDate;

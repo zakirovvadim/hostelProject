@@ -47,7 +47,7 @@ public class GuestController {
     }
 
     //Назначение гостю апартаментов
-    @PutMapping(value = "/appoint")
+    @PutMapping(value = "/appointment")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<GuestDto> appointApartment(@RequestParam(name = "passportNumber") String passportNumber,
                                                   @RequestParam(name = "numberOfApartment") Long number) {
