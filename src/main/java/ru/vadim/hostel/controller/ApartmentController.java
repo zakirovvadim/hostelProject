@@ -27,8 +27,8 @@ public class ApartmentController {
     @PostMapping(value = "")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(description = "Create apartment", responses = {@ApiResponse(responseCode = "200", description = "Apartment was added")})
-    public ResponseEntity<ApartmentDto> saveApartment(@RequestBody ApartmentDto dto) {
-        return new ResponseEntity<>(service.save(dto), HttpStatus.OK);
+    public ResponseEntity<ApartmentDto> saveApartment(@RequestBody ApartmentDto apartment) {
+        return new ResponseEntity<>(service.save(apartment), HttpStatus.OK);
     }
 
     // Удаление апартамента
@@ -58,7 +58,7 @@ public class ApartmentController {
 
     // Назначение категории апартаменту
     @PutMapping(value = "")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @Operation(description = "Appoint category to apartment", responses = {@ApiResponse(responseCode = "200", description = "Category was appointed")})
     public ResponseEntity<ApartmentDto> appointCategory(@RequestParam(name = "idOfCategory") Long id,
                                              @RequestParam(name = "numberOfApartment") Long number) {

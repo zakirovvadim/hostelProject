@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-user-role-table.yaml
   - include:
       file: db/changelog/changeset/insert-first-content.yaml
+  - include:
+      file: db/changelog/changeset/insert-categories.yaml
