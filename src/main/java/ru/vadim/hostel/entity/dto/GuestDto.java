@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Lob;
 import java.time.LocalDate;
 
 @Getter
@@ -16,7 +17,7 @@ public class GuestDto {
     private String lastname;
     private String patronymic;
     private String passport;
-    private Byte [] image;
+    private String imagepath;
     private LocalDate birthdate;
     private LocalDate startDate;
     private LocalDate endDate;

@@ -18,8 +18,7 @@ public class Guest {
     private String lastname;
     private String patronymic;
     private String passport;
-    @Lob
-    private Byte [] image;
+    private String imagepath;
     private LocalDate birthdate;
     private LocalDate startDate;
     private LocalDate endDate;

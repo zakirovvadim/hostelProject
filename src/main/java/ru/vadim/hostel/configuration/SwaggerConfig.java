@@ -37,7 +37,7 @@ public class SwaggerConfig {
                 "Some custom description of API.",
                 "1.0",
                 "Terms of service",
-                new Contact("Vadim Zakirov", "www.vk.com", "appolon17@gmail.com"),
+                new Contact("Vadim Zakirov", "https://bitbucket.org/Zakirov_Vadim_Galievich/", "appolon17@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());

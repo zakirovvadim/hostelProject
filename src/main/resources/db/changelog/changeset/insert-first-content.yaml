@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-into-data
+      author: Vadim
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT COUNT(*) FROM usr WHERE username = 'vadim'
+      changes:
+        - insert:
+            tableName: usr
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: name
+                  value: "Vadim Zakirov"
+              - column:
+                  name: username
+                  value: "vadim"
+              - column:
+                  name: password
+                  value: "$2a$04$t56eMaiDPBAmkwnV1j5vmuDOWVt/BN3Cda2BNjftS4PDf0z22Upr."
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: name
+                  value: "ROLE_ADMIN"
+        - insert:
+            tableName: user_role
+            columns:
+              - column:
+                  name: user_id
+                  value: "1"
+              - column:
+                  name: role_id
+                  value: "1"

@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.vadim.hostel.entity.Guest;
 import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.service.GuestService;
 
