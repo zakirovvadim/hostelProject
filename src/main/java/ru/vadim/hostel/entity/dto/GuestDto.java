@@ -16,7 +16,7 @@ public class GuestDto {
     private String lastname;
     private String patronymic;
     private String passport;
-    private byte[] image;
+    private Byte [] image;
     private LocalDate birthdate;
     private LocalDate startDate;
     private LocalDate endDate;

@@ -1,4 +1,4 @@
-package ru.vadim.hostel.security;
+package ru.vadim.hostel.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(PUBLIC_URLS).permitAll()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .and()
