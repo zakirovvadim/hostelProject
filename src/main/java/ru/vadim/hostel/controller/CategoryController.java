@@ -21,7 +21,6 @@ public class CategoryController {
     private final CategoryService service;
 
 
-    // Создание категории
     @PostMapping(value = "")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(description = "Create category", responses = {@ApiResponse(responseCode = "200", description = "Category was created")})
@@ -29,7 +28,6 @@ public class CategoryController {
         return new ResponseEntity<>(service.save(categoryDto), HttpStatus.OK);
     }
 
-    //Удаление категории
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(description = "Delete category by id", responses = {@ApiResponse(responseCode = "200", description = "Category was deleted")})
@@ -38,7 +36,6 @@ public class CategoryController {
         return ResponseEntity.ok().build();
     }
 
-    //Получение списка категорий
     @GetMapping(value = "")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Get list of category", responses = {@ApiResponse(responseCode = "200", description = "List of category received")})

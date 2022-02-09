@@ -20,7 +20,6 @@ import java.util.List;
 public class GuestController {
     private final GuestService service;
 
-    // Добавление гостя
     @PostMapping(value = "")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Create guest", responses = {@ApiResponse(responseCode = "200", description = "Guest was created")})
@@ -28,7 +27,6 @@ public class GuestController {
         return new ResponseEntity<>(service.save(guestDto), HttpStatus.OK);
     }
 
-    // Удаление гостя
     @DeleteMapping(value = "/{passportNumber}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Delete guest", responses = {@ApiResponse(responseCode = "200", description = "Guest was deleted")})
@@ -37,7 +35,6 @@ public class GuestController {
         return ResponseEntity.ok().build();
     }
 
-    //Получение списка гостей
     @GetMapping(value = "")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Get list of all guests", responses = {@ApiResponse(responseCode = "200", description = "List of all guests received")})
@@ -45,7 +42,6 @@ public class GuestController {
         return service.getGuests();
     }
 
-    // Редактирование гостя
     @PutMapping(value = "")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Update information about guest", responses = {@ApiResponse(responseCode = "200", description = "Guest was updated")})
@@ -53,7 +49,6 @@ public class GuestController {
         return new ResponseEntity<>(service.updateGuest(guestDto), HttpStatus.OK);
     }
 
-    //Назначение гостю апартаментов
     @PutMapping(value = "/appointment")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Appoint guest to apartment", responses = {@ApiResponse(responseCode = "200", description = "Apartment was appointed")})

@@ -2,7 +2,6 @@ package ru.vadim.hostel.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;

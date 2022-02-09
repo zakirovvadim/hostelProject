@@ -23,7 +23,6 @@ public class ApartmentController {
     private final ApartmentService service;
     private final GuestService guestService;
 
-    // Добавление апартамента
     @PostMapping(value = "")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(description = "Create apartment", responses = {@ApiResponse(responseCode = "200", description = "Apartment was added")})
@@ -31,7 +30,6 @@ public class ApartmentController {
         return new ResponseEntity<>(service.save(apartment), HttpStatus.OK);
     }
 
-    // Удаление апартамента
     @DeleteMapping(value = "/{number}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(description = "Delete apartment by number", responses = {@ApiResponse(responseCode = "200", description = "Apartment was deleted")})
@@ -40,7 +38,6 @@ public class ApartmentController {
         return ResponseEntity.ok().build();
     }
 
-    // Получение гостей апартамента
     @GetMapping(value = "/guests")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Get guests whose live in apartment", responses = {@ApiResponse(responseCode = "200", description = "List of guests received")})
@@ -48,7 +45,6 @@ public class ApartmentController {
         return new ResponseEntity<>(guestService.getGuestsFromApart(number), HttpStatus.OK);
     }
 
-    // Получение количества помещений (в апартаменте)
     @GetMapping(value = "/rooms")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Get count of rooms in apartment", responses = {@ApiResponse(responseCode = "200", description = "Count was received")})
@@ -56,7 +52,6 @@ public class ApartmentController {
         return new ResponseEntity<>(service.getApartmentByNumber(number).getCountOfRooms(), HttpStatus.OK);
     }
 
-    // Назначение категории апартаменту
     @PutMapping(value = "")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @Operation(description = "Appoint category to apartment", responses = {@ApiResponse(responseCode = "200", description = "Category was appointed")})
