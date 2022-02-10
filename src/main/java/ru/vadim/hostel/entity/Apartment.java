@@ -8,7 +8,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
 
 @Data
 @Entity
@@ -23,7 +24,7 @@ public class Apartment {
     @JsonBackReference
     private List<Guest> guests;
     private LocalDate dateOfCleaning;
-    @ManyToOne(cascade = ALL)
+    @ManyToOne(cascade = ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonManagedReference
     private Category category;

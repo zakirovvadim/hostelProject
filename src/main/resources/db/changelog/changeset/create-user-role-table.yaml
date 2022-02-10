@@ -1,0 +1,24 @@
+databaseChangeLog:
+  #  - preConditions:
+  #      - tableExists:
+  #          onFail: warn
+  #          tableName: usr
+  - changeSet:
+      id: create-usr-role
+      author: Vadim
+      changes:
+        - createTable:
+            tableName: user_role
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: user_id_role_id
+                    references: usr(id)
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: role_id_user_id
+                    references: roles(id)

@@ -18,7 +18,6 @@ public class ApartmentService {
     private final CategoryMapper categoryMapper;
     private final CategoryService categoryService;
 
-    //myself notice - if apartment's category already have had, we replace this category on category from database
     public ApartmentDto save(ApartmentDto dto) {
         if (dto.getCategory() != null) {
             CategoryDto foundCategory = categoryService.findByName(dto.getCategory().getName());

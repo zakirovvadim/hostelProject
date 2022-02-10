@@ -28,7 +28,7 @@ databaseChangeLog:
                   type: varchar(255)
               - column:
                   name: passport
-                  type: integer
+                  type: varchar(100)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -48,5 +48,5 @@ databaseChangeLog:
                   name: apartment_id
                   type: bigint
                   constraints:
-                    foreignKeyName: apartment_id
+                    foreignKeyName: fk_apartment_id
                     references: apartment(id)

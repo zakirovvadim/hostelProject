@@ -6,8 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.CascadeType.REFRESH;
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Data
