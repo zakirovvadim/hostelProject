@@ -13,9 +13,4 @@ public class HostelApplication {
         SpringApplication.run(HostelApplication.class, args);
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

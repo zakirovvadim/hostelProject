@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.vadim.hostel.security.filter.CustomAuthenticationFilter;
 import ru.vadim.hostel.security.filter.CustomAuthorizationFilter;
@@ -24,7 +25,7 @@ import ru.vadim.hostel.security.filter.CustomAuthorizationFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    //private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private static final String[] PUBLIC_URLS = {
             "/v2/api-docs/**",
@@ -37,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -53,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_URLS).permitAll()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/apartments/test/**").permitAll()
                 .and()
                 .headers().frameOptions().disable()
                 .and()
@@ -71,10 +71,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui/**");
     }
 
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
     }
+//    @Bean
+//    public BCryptPasswordEncoder getPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }

@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.vadim.hostel.entity.Role;
@@ -29,7 +30,6 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
 
@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto saveUser(UserDto userDto) {
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
         userRepository.save(userMapper.map(userDto));
         return userDto;
     }

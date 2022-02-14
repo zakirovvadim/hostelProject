@@ -23,8 +23,14 @@ spring:
     broker-url: tcp://localhost:61616
     user: admin
     password: admin
-  jms:
-    pub-sub-domain: true
+    packages:
+      trust-all: true
+
+    #  jms:
+#    pub-sub-domain: true
+
+
+
 
 
   h2:

@@ -1,11 +1,11 @@
 databaseChangeLog:
-#  - preConditions:
-#      - tableExists:
-#          onFail: warn
-#          tableName: apartment
   - changeSet:
       id: create-apartment
       author: Vadim
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: apartment
       changes:
         - createTable:
             tableName: apartment

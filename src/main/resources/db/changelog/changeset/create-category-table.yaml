@@ -1,11 +1,11 @@
 databaseChangeLog:
-#  - preConditions:
-#      - tableExists:
-#          onFail: warn
-#          tableName: category
   - changeSet:
       id: create-category
       author: Vadim
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: category
       changes:
         - createTable:
             tableName: category

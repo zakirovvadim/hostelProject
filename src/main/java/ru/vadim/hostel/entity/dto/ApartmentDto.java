@@ -1,6 +1,8 @@
 package ru.vadim.hostel.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

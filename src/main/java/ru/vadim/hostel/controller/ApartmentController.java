@@ -1,7 +1,6 @@
 package ru.vadim.hostel.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,17 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.vadim.hostel.consumers.events.DeleteUtils.DeleteEvent;
-import ru.vadim.hostel.consumers.events.Events;
-import ru.vadim.hostel.consumers.events.SaveUtils.SaveEvent;
-import ru.vadim.hostel.consumers.util.Sender;
+//import ru.vadim.hostel.consumer.events.DeleteEvent.DeleteEvent;
+//import ru.vadim.hostel.consumer.events.Events;
+//import ru.vadim.hostel.consumer.events.SaveUtil.SaveEvent;
+//import ru.vadim.hostel.consumer.utils.Sender;
+
+import ru.vadim.hostel.consumer.events.DeleteEvent.DeleteEvent;
+import ru.vadim.hostel.consumer.events.Events;
+import ru.vadim.hostel.consumer.events.SaveUtil.SaveEvent;
+import ru.vadim.hostel.consumer.utils.Sender;
 import ru.vadim.hostel.entity.dto.ApartmentDto;
 import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.service.ApartmentService;
 import ru.vadim.hostel.service.GuestService;
 
-import javax.jms.Queue;
-import javax.jms.Topic;
 import java.util.List;
 
 @RestController
@@ -32,7 +34,9 @@ import java.util.List;
 public class ApartmentController {
     private final ApartmentService service;
     private final GuestService guestService;
+
     private final JmsTemplate jmsTemplate;
+    private final ObjectMapper mapper;
 
 
     @PostMapping(value = "")
@@ -42,7 +46,7 @@ public class ApartmentController {
         SaveEvent saveEvent = new SaveEvent();
         saveEvent.setEvents(Events.APARTMENT);
         saveEvent.setObject(apartment);
-        Sender.queueSender(apartment.toString(), saveEvent, jmsTemplate);
+        Sender.saveThrowBroker(mapper, jmsTemplate, saveEvent);
         return new ResponseEntity<>(apartment, HttpStatus.OK);
     }
 
@@ -53,7 +57,7 @@ public class ApartmentController {
         DeleteEvent deleteEvent = new DeleteEvent();
         deleteEvent.setEvents(Events.APARTMENT);
         deleteEvent.setNumber(number.toString());
-        Sender.topicSender(number.toString(), deleteEvent, jmsTemplate);
+        Sender.deleteThrowBroker(mapper, jmsTemplate, deleteEvent);
         return ResponseEntity.ok().build();
     }
 
@@ -75,7 +79,7 @@ public class ApartmentController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @Operation(description = "Appoint category to apartment", responses = {@ApiResponse(responseCode = "200", description = "Category was appointed")})
     public ResponseEntity<ApartmentDto> appointCategory(@RequestParam(name = "idOfCategory") Long id,
-                                             @RequestParam(name = "numberOfApartment") Long number) {
+                                                        @RequestParam(name = "numberOfApartment") Long number) {
         return new ResponseEntity<>(service.appointCategoryToApartment(number, id), HttpStatus.OK);
     }
 }
