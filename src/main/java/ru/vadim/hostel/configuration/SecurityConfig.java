@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_URLS).permitAll()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/api/apartments/test/**").permitAll()
                 .and()
                 .headers().frameOptions().disable()
                 .and()

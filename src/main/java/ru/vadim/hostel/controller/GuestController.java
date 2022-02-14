@@ -6,8 +6,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.vadim.hostel.consumers.events.DeleteUtils.DeleteEvent;
+import ru.vadim.hostel.consumers.events.Events;
+import ru.vadim.hostel.consumers.events.SaveUtils.SaveEvent;
+//import ru.vadim.hostel.consumers.util.Sender;
 import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.service.GuestService;
 
@@ -19,11 +24,16 @@ import java.util.List;
 @Api(tags = "Guest")
 public class GuestController {
     private final GuestService service;
+    private final JmsTemplate jmsTemplate;
 
     @PostMapping(value = "")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Create guest", responses = {@ApiResponse(responseCode = "200", description = "Guest was created")})
     public ResponseEntity<GuestDto> saveGuest(@RequestBody GuestDto guestDto) {
+        SaveEvent saveEvent = new SaveEvent();
+        saveEvent.setEvents(Events.GUEST);
+        service.save(guestDto);
+        //Sender.queueSender(guestDto.toString(), saveEvent, jmsTemplate);
         return new ResponseEntity<>(service.save(guestDto), HttpStatus.OK);
     }
 
@@ -31,7 +41,10 @@ public class GuestController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Delete guest", responses = {@ApiResponse(responseCode = "200", description = "Guest was deleted")})
     public ResponseEntity<Void> deleteGuest(@PathVariable(name = "passportNumber") String passportNumber) {
-        service.delete(passportNumber);
+        DeleteEvent deleteEvent = new DeleteEvent();
+        deleteEvent.setEvents(Events.GUEST);
+        deleteEvent.setNumber(passportNumber);
+       // Sender.topicSender(passportNumber, deleteEvent, jmsTemplate);
         return ResponseEntity.ok().build();
     }
 

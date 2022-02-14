@@ -2,18 +2,30 @@ spring:
   liquibase:
     enabled: true
   datasource:
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: postgres
     url: jdbc:h2:file:./db
     username: u
     password: 1
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+
+#  activemq:
+#    in-memory: false
+#    pool:
+#      enabled: false
+#    broker-url: tcp://localhost:61616
+#    messaging:
+#      subsystem:
+#        autoStart: false
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+  jms:
+    pub-sub-domain: true
+
 
   h2:
     console:
