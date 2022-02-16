@@ -1,6 +1,9 @@
 package ru.vadim.hostel.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.vadim.hostel.entity.Apartment;
 import ru.vadim.hostel.entity.dto.ApartmentDto;
@@ -12,12 +15,14 @@ import ru.vadim.hostel.repository.ApartmentRepository;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = {"apartment"})
 public class ApartmentService {
     private final ApartmentRepository repository;
     private final ApartmentMapper mapper;
     private final CategoryMapper categoryMapper;
     private final CategoryService categoryService;
 
+    @CacheEvict(value = "apartment", allEntries = true)
     public ApartmentDto save(ApartmentDto dto) {
         if (dto.getCategory() != null) {
             CategoryDto foundCategory = categoryService.findByName(dto.getCategory().getName());
@@ -35,16 +40,18 @@ public class ApartmentService {
         }
     }
 
+    @CacheEvict(value = "apartment", allEntries = true)
     public void delete(Long number) {
         Apartment apartment = repository.findApartmentByNumber(number).orElseThrow(() -> new NoEntityException(number));
         repository.deleteById(apartment.getId());
     }
-
+    @Cacheable(value = "apartment")
     public ApartmentDto getApartmentByNumber(Long number) {
         Apartment apartment = repository.findApartmentByNumber(number).orElseThrow(() -> new NoEntityException(number));
         return mapper.map(apartment);
     }
 
+    @CacheEvict(value = "apartment", allEntries = true)
     public ApartmentDto appointCategoryToApartment(Long number, Long categoryId) {
         Apartment apartment = mapper.map(getApartmentByNumber(number));
         CategoryDto categoryDto = categoryService.getCategoryById(categoryId);
