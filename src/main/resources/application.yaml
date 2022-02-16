@@ -2,18 +2,20 @@ spring:
   liquibase:
     enabled: true
   datasource:
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: postgres
     url: jdbc:h2:file:./db
     username: u
     password: 1
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    packages:
+      trust-all: true
 
   h2:
     console:
@@ -25,3 +27,8 @@ spring:
     allow-bean-definition-overriding: true
 server:
   port: 8080
+logging:
+  level:
+    org:
+      springframework:
+        cache: TRACE

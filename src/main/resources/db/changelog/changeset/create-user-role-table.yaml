@@ -1,11 +1,11 @@
 databaseChangeLog:
-  #  - preConditions:
-  #      - tableExists:
-  #          onFail: warn
-  #          tableName: usr
   - changeSet:
       id: create-usr-role
       author: Vadim
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: user_role
       changes:
         - createTable:
             tableName: user_role

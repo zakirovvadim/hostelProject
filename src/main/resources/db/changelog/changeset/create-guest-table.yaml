@@ -1,11 +1,11 @@
 databaseChangeLog:
-#  - preConditions:
-#      - tableExists:
-#          onFail: warn
-#          tableName: guest
   - changeSet:
       id: create-guest
       author: Vadim
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: guest
       changes:
         - createTable:
             tableName: guest
