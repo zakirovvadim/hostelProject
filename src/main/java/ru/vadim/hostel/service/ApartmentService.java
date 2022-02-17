@@ -1,10 +1,15 @@
 package ru.vadim.hostel.service;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.routing.FromConfig;
+import com.typesafe.config.ConfigFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import ru.vadim.hostel.actors.ApartmentActor;
 import ru.vadim.hostel.entity.Apartment;
 import ru.vadim.hostel.entity.dto.ApartmentDto;
 import ru.vadim.hostel.entity.dto.CategoryDto;
@@ -29,14 +34,17 @@ public class ApartmentService {
             if (foundCategory.getName() != null) {
                 dto.setCategory(foundCategory);
                 Apartment apartment = mapper.map(dto);
-                return mapper.map(repository.save(apartment));
+                giveToActor(apartment);
+                return mapper.map(apartment);
             } else {
                 Apartment apartment = mapper.map(dto);
-                return mapper.map(repository.save(apartment));
+                giveToActor(apartment);
+                return mapper.map(apartment);
             }
         } else {
             Apartment apartment = mapper.map(dto);
-            return mapper.map(repository.save(apartment));
+            giveToActor(apartment);
+            return mapper.map(apartment);
         }
     }
 
@@ -58,5 +66,11 @@ public class ApartmentService {
 
         apartment.setCategory(categoryMapper.map(categoryDto));
         return mapper.map(repository.save(apartment));
+    }
+
+    public void giveToActor(Apartment apartment) {
+        final ActorSystem system = ActorSystem.create("TaskSystem", ConfigFactory.load().getConfig("TaskSystem"));
+        ActorRef router = system.actorOf(ApartmentActor.props(repository).withRouter(new FromConfig()), "TaskRouter");
+        router.tell(apartment, null);
     }
 }

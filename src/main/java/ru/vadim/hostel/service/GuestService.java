@@ -1,11 +1,17 @@
 package ru.vadim.hostel.service;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.routing.FromConfig;
+import com.typesafe.config.ConfigFactory;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import ru.vadim.hostel.actors.ApartmentActor;
+import ru.vadim.hostel.actors.GuestActor;
 import ru.vadim.hostel.entity.Apartment;
 import ru.vadim.hostel.entity.Guest;
 import ru.vadim.hostel.entity.dto.GuestDto;
@@ -29,7 +35,7 @@ public class GuestService {
     @CacheEvict(value = "guest", allEntries = true)
     public GuestDto save(GuestDto guestDto) {
         Guest guest = guestMapper.map(guestDto);
-        repository.save(guest);
+        giveToActor(guest);
         return guestMapper.map(guest);
     }
     @CacheEvict(value = "guest", allEntries = true)
@@ -63,5 +69,10 @@ public class GuestService {
         GuestDto dto = guestMapper.map(guest);
         dto.setApartment(apartmentMapper.map(apartment));
         return save(dto);
+    }
+    public void giveToActor(Guest guest) {
+        final ActorSystem system = ActorSystem.create("TaskSystem", ConfigFactory.load().getConfig("TaskSystem"));
+        ActorRef router = system.actorOf(GuestActor.props(repository).withRouter(new FromConfig()), "TaskRouter");
+        router.tell(guest, null);
     }
 }
