@@ -5,12 +5,10 @@ import akka.actor.ActorSystem;
 import akka.routing.FromConfig;
 import com.typesafe.config.ConfigFactory;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import ru.vadim.hostel.actors.ApartmentActor;
 import ru.vadim.hostel.actors.GuestActor;
 import ru.vadim.hostel.entity.Apartment;
 import ru.vadim.hostel.entity.Guest;
@@ -49,6 +47,7 @@ public class GuestService {
     public List<GuestDto> getGuests() {
         return guestMapper.map(repository.findAll());
     }
+
     @CacheEvict(value = "guest", allEntries = true)
     public GuestDto updateGuest(GuestDto guestDto) {
         Guest currentGuest = repository.findGuestByPassport(guestDto.getPassport()).orElseThrow(() -> new NoEntityException(guestDto.getPassport()));

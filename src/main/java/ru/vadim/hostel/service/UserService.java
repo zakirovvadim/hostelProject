@@ -5,7 +5,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.vadim.hostel.entity.Role;
@@ -32,11 +31,12 @@ public class UserService implements UserDetailsService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = Optional.of(userRepository.findByUsername(username)).orElseThrow(() -> new NoEntityException(username));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoEntityException(username));
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -45,18 +45,16 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto saveUser(UserDto userDto) {
-        userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
-        userRepository.save(userMapper.map(userDto));
-        return userDto;
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        return userMapper.map(userRepository.save(userMapper.map(userDto)));
     }
 
     public RoleDto saveRole(RoleDto roleDto) {
-        roleRepository.save(roleMapper.map(roleDto));
-        return roleDto;
+        return roleMapper.map(roleRepository.save(roleMapper.map(roleDto)));
     }
 
     public void addRoleToUser(String username, String roleName) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoEntityException(username));
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
         userRepository.save(user);

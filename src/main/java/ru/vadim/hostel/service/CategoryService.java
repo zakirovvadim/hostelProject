@@ -5,8 +5,6 @@ import akka.actor.ActorSystem;
 import akka.routing.FromConfig;
 import com.typesafe.config.ConfigFactory;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,7 +24,6 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper categoryMapper;
-    private final static Logger LOG = LoggerFactory.getLogger(CategoryService.class);
 
     @CacheEvict(value = "category", allEntries = true)
     public CategoryDto save(CategoryDto categoryDto) {
@@ -48,7 +45,6 @@ public class CategoryService {
 
     @Cacheable(value = "category", key = "id")
     public CategoryDto getCategoryById(Long id) {
-        LOG.info("Trying to get category information for id {} ", id);
         return categoryMapper.map(repository.findById(id).orElseThrow(() -> new NoEntityException(id)));
     }
 
