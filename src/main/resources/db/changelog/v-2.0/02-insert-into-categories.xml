@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="insert-into-categories" author="Vadim">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*)
+                                         FROM category
+                                         WHERE name = 'Apartment'</sqlCheck>
+        </preConditions>
+        <insert catalogName="category"
+                dbms="h2"
+                schemaName="public"
+                tableName="category">
+            <column name="id" value="1"/>
+            <column name="name" value="Apartment"/>
+            <column name="description" value="Apartment"/>
+        </insert>
+        <insert catalogName="category"
+                dbms="h2"
+                schemaName="public"
+                tableName="category">
+            <column name="id" value="2"/>
+            <column name="name" value="Business"/>
+            <column name="description" value="Business"/>
+        </insert>
+        <insert catalogName="category"
+                dbms="h2"
+                schemaName="public"
+                tableName="category">
+            <column name="id" value="3"/>
+            <column name="name" value="Deluxe"/>
+            <column name="description" value="Deluxe"/>
+        </insert>
+        <insert catalogName="category"
+                dbms="h2"
+                schemaName="public"
+                tableName="category">
+            <column name="id" value="4"/>
+            <column name="name" value="Duplex"/>
+            <column name="description" value="Duplex"/>
+        </insert>
+        <insert catalogName="category"
+                dbms="h2"
+                schemaName="public"
+                tableName="category">
+            <column name="id" value="5"/>
+            <column name="name" value="Superior"/>
+            <column name="description" value="Superior"/>
+        </insert>
+        <insert catalogName="category"
+                dbms="h2"
+                schemaName="public"
+                tableName="category">
+            <column name="id" value="6"/>
+            <column name="name" value="Standard"/>
+            <column name="description" value="Standard"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

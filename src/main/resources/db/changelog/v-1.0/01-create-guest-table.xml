@@ -1,0 +1,32 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.3.xsd">
+
+    <changeSet id="create-guest-table" author="Vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="guest"/>
+        </preConditions>
+        <createTable tableName="guest">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="firstname" type="varchar(255)"/>
+            <column name="lastname" type="varchar(255)"/>
+            <column name="patronymic" type="varchar(255)"/>
+            <column name="passport" type="varchar(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image" type="binary array"/>
+            <column name="birthdate" type="date"/>
+            <column name="start_date" type="date"/>
+            <column name="end_date" type="date"/>
+            <column name="apartment_id" type="bigint">
+                <constraints foreignKeyName="fk_apartment_id" references="apartment(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

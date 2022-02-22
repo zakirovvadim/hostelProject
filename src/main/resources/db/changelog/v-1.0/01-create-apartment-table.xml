@@ -1,0 +1,24 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.3.xsd">
+    <changeSet id="create-apartment-table" author="vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="apartment"/>
+        </preConditions>
+        <createTable tableName="apartment">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="bigint">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="count_of_rooms" type="integer"/>
+            <column name="date_of_cleaning" type="date"/>
+            <column name="category_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
