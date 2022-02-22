@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.vadim.hostel.actors.ApartmentActor;
 import ru.vadim.hostel.entity.Apartment;
+import ru.vadim.hostel.entity.Category;
 import ru.vadim.hostel.entity.dto.ApartmentDto;
 import ru.vadim.hostel.entity.dto.CategoryDto;
 import ru.vadim.hostel.exception.NoEntityException;
@@ -22,6 +23,7 @@ import ru.vadim.hostel.repository.ApartmentRepository;
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = {"apartment"})
 public class ApartmentService {
+
     private final ApartmentRepository repository;
     private final ApartmentMapper mapper;
     private final CategoryMapper categoryMapper;
@@ -53,18 +55,21 @@ public class ApartmentService {
         Apartment apartment = repository.findApartmentByNumber(number).orElseThrow(() -> new NoEntityException(number));
         repository.deleteById(apartment.getId());
     }
+
+    public Integer getCountOfRooms(Long number) {
+        return getApartmentByNumber(number).getCountOfRooms();
+    }
+
     @Cacheable(value = "apartment")
-    public ApartmentDto getApartmentByNumber(Long number) {
-        Apartment apartment = repository.findApartmentByNumber(number).orElseThrow(() -> new NoEntityException(number));
-        return mapper.map(apartment);
+    public Apartment getApartmentByNumber(Long number) {
+        return repository.findApartmentByNumber(number).orElseThrow(() -> new NoEntityException(number));
     }
 
     @CacheEvict(value = "apartment", allEntries = true)
     public ApartmentDto appointCategoryToApartment(Long number, Long categoryId) {
-        Apartment apartment = mapper.map(getApartmentByNumber(number));
-        CategoryDto categoryDto = categoryService.getCategoryById(categoryId);
-
-        apartment.setCategory(categoryMapper.map(categoryDto));
+        Apartment apartment = getApartmentByNumber(number);
+        Category category = categoryService.getCategoryById(categoryId);
+        apartment.setCategory(category);
         return mapper.map(repository.save(apartment));
     }
 

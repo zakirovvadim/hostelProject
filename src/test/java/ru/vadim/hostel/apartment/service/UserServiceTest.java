@@ -3,6 +3,7 @@ package ru.vadim.hostel.apartment.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -76,6 +77,20 @@ class UserServiceTest {
 
     @Test
     void addRoleToUser() {
+        // given
+        User user = getUser();
+        Role role = getRole();
+        // when
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(roleRepository.findByName(role.getName())).thenReturn(Optional.of(role));
+        userService.addRoleToUser(user.getUsername(), role.getName());
+        // then
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
+        User capturedUser = userArgumentCaptor.getValue();
+
+        assertThat(capturedUser.getRoles()).isEqualTo(user.getRoles());
+
     }
 
     @Test

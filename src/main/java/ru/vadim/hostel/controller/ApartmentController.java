@@ -71,7 +71,7 @@ public class ApartmentController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @Operation(description = "Get count of rooms in apartment", responses = {@ApiResponse(responseCode = "200", description = "Count was received")})
     public ResponseEntity<Integer> getCountOfRooms(@RequestParam(name = "number") Long number) {
-        return new ResponseEntity<>(service.getApartmentByNumber(number).getCountOfRooms(), HttpStatus.OK);
+        return new ResponseEntity<>(service.getCountOfRooms(number), HttpStatus.OK);
     }
 
     @PutMapping(value = "")

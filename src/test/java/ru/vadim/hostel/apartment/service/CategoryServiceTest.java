@@ -45,7 +45,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    void itShouldShowCoundOfRequestToDeleteMethod() {
+    void itShouldShowCountOfRequestToDeleteMethod() {
         // given
         Category category = mock(Category.class);
         category.setId(1L);
@@ -72,7 +72,7 @@ class CategoryServiceTest {
         // when
         when(repository.findById(1L)).thenReturn(categoryMock);
         // then
-        assertEquals(category, mapper.map(categoryService.getCategoryById(1L)));
+        assertEquals(category, categoryService.getCategoryById(1L));
     }
 
     @Test

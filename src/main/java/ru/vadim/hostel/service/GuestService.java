@@ -63,7 +63,7 @@ public class GuestService {
     @CacheEvict(value = "guest", allEntries = true)
     public GuestDto appointGuestToApartment(String passportNumber, Long apartmentNumber) {
         Guest guest = repository.findGuestByPassport(passportNumber).orElseThrow(() -> new NoEntityException(passportNumber));
-        Apartment apartment = apartmentMapper.map(apartmentService.getApartmentByNumber(apartmentNumber));
+        Apartment apartment = apartmentService.getApartmentByNumber(apartmentNumber);
         guest.setApartment(apartment);
         GuestDto dto = guestMapper.map(guest);
         dto.setApartment(apartmentMapper.map(apartment));

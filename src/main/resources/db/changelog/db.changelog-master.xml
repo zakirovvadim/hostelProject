@@ -1,0 +1,162 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.3.xsd">
+    <preConditions>
+        <dbms type="h2"/>
+    </preConditions>
+
+    <changeSet id="create-apartment-table" author="vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="apartment"/>
+        </preConditions>
+        <createTable tableName="apartment">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="bigint">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="count_of_rooms" type="integer"/>
+            <column name="date_of_cleaning" type="date"/>
+            <column name="category_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-category-table" author="Vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="category"/>
+        </preConditions>
+        <createTable tableName="category">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-guest-table" author="Vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="guest"/>
+        </preConditions>
+        <createTable tableName="guest">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="firstname" type="varchar(255)"/>
+            <column name="lastname" type="varchar(255)"/>
+            <column name="patronymic" type="varchar(255)"/>
+            <column name="passport" type="varchar(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image" type="binary array"/>
+            <column name="birthdate" type="date"/>
+            <column name="start_date" type="date"/>
+            <column name="end_date" type="date"/>
+            <column name="apartment_id" type="bigint">
+                <constraints foreignKeyName="fk_apartment_id" references="apartment(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-roles-table" author="Vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="roles"/>
+        </preConditions>
+        <createTable tableName="roles">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-usr" author="Vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="usr"/>
+        </preConditions>
+        <createTable tableName="usr">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="username" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-usr-role" author="Vadim">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user_role"/>
+        </preConditions>
+        <createTable tableName="user_role">
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="user_id_role_id" references="usr(id)"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints foreignKeyName="role_id_user_idd" references="roles(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+<!--    <changeSet id="insert-into-categories" author="Vadim">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <sqlCheck expectedResult="0">SELECT COUNT(*)-->
+<!--                                         FROM category-->
+<!--                                         WHERE name = 'Apartment'</sqlCheck>-->
+<!--        </preConditions>-->
+<!--        <insert catalogName="category"-->
+<!--                dbms="h2"-->
+<!--                schemaName="public"-->
+<!--                tableName="category">-->
+<!--            <column name="id" value="1"/>-->
+<!--            <column name="name" value="Apartment"/>-->
+<!--            <column name="description" value="Apartment"/>-->
+<!--        </insert>-->
+<!--        <insert catalogName="category"-->
+<!--                dbms="h2"-->
+<!--                schemaName="public"-->
+<!--                tableName="category">-->
+<!--            <column name="id" value="2"/>-->
+<!--            <column name="name" value="Business"/>-->
+<!--            <column name="description" value="Business"/>-->
+<!--        </insert>-->
+<!--        <insert catalogName="category"-->
+<!--                dbms="h2"-->
+<!--                schemaName="public"-->
+<!--                tableName="category">-->
+<!--            <column name="id" value="3"/>-->
+<!--            <column name="name" value="Deluxe"/>-->
+<!--            <column name="description" value="Deluxe"/>-->
+<!--        </insert>-->
+<!--        <insert catalogName="category"-->
+<!--                dbms="h2"-->
+<!--                schemaName="public"-->
+<!--                tableName="category">-->
+<!--            <column name="id" value="4"/>-->
+<!--            <column name="name" value="Duplex"/>-->
+<!--            <column name="description" value="Duplex"/>-->
+<!--        </insert>-->
+<!--        <insert catalogName="category"-->
+<!--                dbms="h2"-->
+<!--                schemaName="public"-->
+<!--                tableName="category">-->
+<!--            <column name="id" value="5"/>-->
+<!--            <column name="name" value="Superior"/>-->
+<!--            <column name="description" value="Superior"/>-->
+<!--        </insert>-->
+<!--        <insert catalogName="category"-->
+<!--                dbms="h2"-->
+<!--                schemaName="public"-->
+<!--                tableName="category">-->
+<!--            <column name="id" value="6"/>-->
+<!--            <column name="name" value="Standard"/>-->
+<!--            <column name="description" value="Standard"/>-->
+<!--        </insert>-->
+<!--    </changeSet>-->
+
+</databaseChangeLog>

@@ -43,9 +43,9 @@ public class CategoryService {
         return categoryMapper.map(repository.findAll());
     }
 
-    @Cacheable(value = "category", key = "id")
-    public CategoryDto getCategoryById(Long id) {
-        return categoryMapper.map(repository.findById(id).orElseThrow(() -> new NoEntityException(id)));
+    @Cacheable(value = "category")
+    public Category getCategoryById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NoEntityException(id));
     }
 
     public CategoryDto findByName(String name) {

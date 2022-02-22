@@ -1,26 +1,24 @@
 package ru.vadim.hostel.apartment.service;
 
-import liquibase.pro.packaged.G;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.SpringVersion;
 import ru.vadim.hostel.entity.Apartment;
 import ru.vadim.hostel.entity.Guest;
-import ru.vadim.hostel.entity.dto.ApartmentDto;
+import ru.vadim.hostel.entity.dto.GuestDto;
 import ru.vadim.hostel.mapper.ApartmentMapper;
+import ru.vadim.hostel.mapper.CategoryMapper;
 import ru.vadim.hostel.mapper.GuestMapper;
 import ru.vadim.hostel.mapper.GuestMapperImpl;
 import ru.vadim.hostel.repository.ApartmentRepository;
 import ru.vadim.hostel.repository.GuestRepository;
 import ru.vadim.hostel.service.ApartmentService;
+import ru.vadim.hostel.service.CategoryService;
 import ru.vadim.hostel.service.GuestService;
-
-import static org.hamcrest.CoreMatchers.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +28,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
@@ -45,15 +44,20 @@ class GuestServiceTest {
     ApartmentService apartmentService;
     @Mock
     ApartmentMapper apartmentMapper;
-    @Autowired
-    GuestService service;
-    @Autowired
+    @InjectMocks
+    GuestService guestService;
+
     GuestMapper mapper;
+    @Mock
+    CategoryMapper categoryMapper;
+    @InjectMocks
+    CategoryService categoryService;
 
     @BeforeEach
     void setUp() {
         mapper = new GuestMapperImpl();
-        service = new GuestService(repository, mapper, apartmentService, apartmentMapper);
+//        apartmentService = new ApartmentService(apartmentRepository, apartmentMapper, categoryMapper, categoryService);
+        guestService = new GuestService(repository, mapper, apartmentService, apartmentMapper);
     }
 
     @Test
@@ -61,7 +65,7 @@ class GuestServiceTest {
         // given
         Guest guest = getGuestForTest();
         // when
-        Guest saved = mapper.map(service.save(mapper.map(guest)));
+        Guest saved = mapper.map(guestService.save(mapper.map(guest)));
         // then
         assertThat(saved).isEqualTo(guest);
     }
@@ -73,7 +77,7 @@ class GuestServiceTest {
         guest.setPassport("6959485768");
         when(repository.findGuestByPassport("6959485768")).thenReturn(Optional.ofNullable(guest));
         // when
-        service.delete("6959485768");
+        guestService.delete("6959485768");
         // then
         verify(repository, times(1)).findGuestByPassport("6959485768");
     }
@@ -81,7 +85,7 @@ class GuestServiceTest {
     @Test
     void itShouldReturnAllGuests() {
         //when
-        service.getGuests();
+        guestService.getGuests();
         // then
         verify(repository).findAll();
     }
@@ -96,7 +100,7 @@ class GuestServiceTest {
         newGuest.setLastname("Закирова");
         // when
         given(repository.findGuestByPassport(guest.getPassport())).willReturn(Optional.of(guest));
-        service.updateGuest(mapper.map(newGuest));
+        guestService.updateGuest(mapper.map(newGuest));
         // then
 
         verify(repository).save(newGuest);
@@ -112,7 +116,7 @@ class GuestServiceTest {
         // when
         when(repository.findGuestByApartmentNumber(1L)).thenReturn(guestListMock);
         // then
-        Guest expectedGuest = mapper.map(service.getGuestsFromApart(1L).get(0));
+        Guest expectedGuest = mapper.map(guestService.getGuestsFromApart(1L).get(0));
         List<Guest> expectedListGuest = new ArrayList<>();
         expectedListGuest.add(expectedGuest);
         assertEquals(guestList, expectedListGuest);
@@ -120,24 +124,19 @@ class GuestServiceTest {
 
     @Test
     void appointGuestToApartment() {
-//        // given
-//        Guest guest = getGuestForTest();
-//
-//        Apartment apartment = new Apartment();
-//        apartment.setId(1L);
-//        apartment.setNumber(15L);
-//        apartment.setCountOfRooms(12);
-//        apartmentRepository.save(apartment);
-//
-//        ApartmentDto apartmentDto = apartmentMapper.map(apartment);
-//
-//        // when
-//        given(repository.findGuestByPassport(guest.getPassport())).willReturn(Optional.of(guest));
-//        given(apartmentRepository.findApartmentByNumber(apartment.getNumber())).willReturn(Optional.of(apartment));
-//
-//        service.appointGuestToApartment(guest.getPassport(), apartment.getNumber());
-//        // then
-//        verify(repository).save(guest);
+        // given
+        Guest guest = getGuestForTest();
+        Apartment apartment = getApartmentForTest();
+
+        // when
+        when(repository.findGuestByPassport(guest.getPassport())).thenReturn(Optional.of(guest));
+        when(apartmentService.getApartmentByNumber(15L)).thenReturn(apartment);
+
+        GuestDto actual = guestService.appointGuestToApartment(guest.getPassport(), apartment.getNumber());
+        GuestDto expected = mapper.map(guest);
+        // then
+
+        assertTrue(new ReflectionEquals(expected).matches(actual));
     }
 
 
@@ -153,5 +152,13 @@ class GuestServiceTest {
         guest.setImagepath("C:.Users.vzakirov.Pictures");
         guest.setId(1L);
         return guest;
+    }
+
+    public Apartment getApartmentForTest() {
+        Apartment apartment = new Apartment();
+        apartment.setId(1L);
+        apartment.setNumber(15L);
+        apartment.setCountOfRooms(12);
+        return apartment;
     }
 }

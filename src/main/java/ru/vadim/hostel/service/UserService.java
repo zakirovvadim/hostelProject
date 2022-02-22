@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
 
     public void addRoleToUser(String username, String roleName) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new NoEntityException(username));
-        Role role = roleRepository.findByName(roleName);
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new NoEntityException(roleName));
         user.getRoles().add(role);
         userRepository.save(user);
     }
