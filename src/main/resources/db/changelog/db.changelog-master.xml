@@ -1,13 +1,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.3.xsd">
-    <preConditions>
-        <dbms type="h2"/>
-    </preConditions>
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <include file="db/changelog/v-1.0/01-create-apartment-table.xml"/>
     <include file="db/changelog/v-1.0/01-create-category-table.xml"/>
@@ -17,4 +11,6 @@
     <include file="db/changelog/v-1.0/01-create-usr-role.xml"/>
     <include file="db/changelog/v-2.0/02-insert-into-categories.xml"/>
     <include file="db/changelog/v-2.0/02-insert-into-admin.xml"/>
+    <include file="db/changelog/v-2.0/02-insert-into-adminrole.xml"/>
+    <include file="db/changelog/v-2.0/02-insert-into-user-role.xml"/>
 </databaseChangeLog>

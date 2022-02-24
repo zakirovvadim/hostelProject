@@ -6,16 +6,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="insert-into-admin" author="Vadim">
-
-        <insert catalogName="usr"
+    <changeSet id="insert-into-user-role" author="Vadim">
+        <insert catalogName="user_role"
                 dbms="h2"
                 schemaName="public"
-                tableName="usr">
-            <column name="id" value="1"/>
-            <column name="name" value="Vadim Zakirov"/>
-            <column name="username" value="vadim"/>
-            <column name="password" value="$2a$04$t56eMaiDPBAmkwnV1j5vmuDOWVt/BN3Cda2BNjftS4PDf0z22Upr."/>
+                tableName="user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

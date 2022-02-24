@@ -1,0 +1,18 @@
+version: '2'
+services:
+  hostel:
+    build: .
+    ports:
+      - '8080:8080'
+    links:
+      - activemq
+  activemq:
+    hostname: myactivemq
+    image: webcenter/activemq
+    ports:
+      - "61617:61616"
+      - "8162:8161"
+    restart: always
+    volumes:
+      - ./data/activemq:/data/activemq
+      - ./var/log/activemq:/var/log/activemq

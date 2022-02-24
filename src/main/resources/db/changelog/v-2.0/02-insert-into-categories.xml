@@ -7,11 +7,6 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="insert-into-categories" author="Vadim">
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">SELECT COUNT(*)
-                                         FROM category
-                                         WHERE name = 'Apartment'</sqlCheck>
-        </preConditions>
         <insert catalogName="category"
                 dbms="h2"
                 schemaName="public"
