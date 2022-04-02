@@ -21,6 +21,8 @@ spring:
   h2:
     console:
       enabled: true
+      settings:
+        web-allow-others: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

@@ -12,7 +12,7 @@
             <column name="lastname" type="varchar(255)"/>
             <column name="patronymic" type="varchar(255)"/>
             <column name="passport" type="varchar(100)">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="image" type="binary array"/>
             <column name="birthdate" type="date"/>

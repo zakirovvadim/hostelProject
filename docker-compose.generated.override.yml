@@ -1,0 +1,8 @@
+# This is a generated file. Not intended for manual editing.
+version: "2"
+services:
+  hostel:
+    command: "java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*5005\
+      \ -jar hostel.jar "
+    ports:
+    - "8000:8000"

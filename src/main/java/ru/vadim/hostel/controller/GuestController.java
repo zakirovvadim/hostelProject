@@ -33,10 +33,10 @@ public class GuestController {
     @Operation(description = "Create guest", responses = {@ApiResponse(responseCode = "200", description = "Guest was created")})
     public ResponseEntity<GuestDto> saveGuest(@RequestBody GuestDto guestDto) {
         SaveEvent saveEvent = new SaveEvent();
-        saveEvent.setEvents(Events.CATEGORY);
+        saveEvent.setEvents(Events.GUEST);
         saveEvent.setObject(guestDto);
         Sender.saveThrowBroker(mapper, jmsTemplate, saveEvent);
-        return new ResponseEntity<>(service.save(guestDto), HttpStatus.OK);
+        return new ResponseEntity<>(guestDto, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{passportNumber}")

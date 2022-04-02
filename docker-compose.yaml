@@ -1,7 +1,7 @@
 version: '2'
 services:
   activemq:
-    hostname: myactivemq
+    hostname: activemq
     image: webcenter/activemq
     ports:
       - "61616:61616"
@@ -13,6 +13,6 @@ services:
     ports:
       - '8080:8080'
     links:
-      - myactivemq
+      - activemq
     depends_on:
-      - myactivemq
+      - activemq

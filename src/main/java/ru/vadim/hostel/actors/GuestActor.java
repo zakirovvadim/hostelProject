@@ -3,9 +3,11 @@ package ru.vadim.hostel.actors;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.japi.Creator;
+import org.springframework.context.annotation.Scope;
 import ru.vadim.hostel.entity.Guest;
 import ru.vadim.hostel.repository.GuestRepository;
 
+@Scope("prototype")
 public class GuestActor extends UntypedActor {
     private GuestRepository guestRepository;
 
@@ -28,8 +30,6 @@ public class GuestActor extends UntypedActor {
         if (message instanceof Guest) {
             Guest guest = (Guest) message;
             guestRepository.save(guest);
-        } else {
-            unhandled(message);
         }
     }
 }

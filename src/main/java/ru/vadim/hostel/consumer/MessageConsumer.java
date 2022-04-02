@@ -1,6 +1,7 @@
 package ru.vadim.hostel.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,8 @@ import ru.vadim.hostel.service.ApartmentService;
 import ru.vadim.hostel.service.CategoryService;
 import ru.vadim.hostel.service.GuestService;
 
+import java.io.StringReader;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +34,11 @@ public class MessageConsumer {
     public void listenQueue(String message) {
         try {
             SaveEvent saveMessage = mapper.readValue(message, SaveEvent.class);
-            String jsonObject = new JSONObject(message).getString("object");
+            final ObjectNode node = mapper.readValue(message, ObjectNode.class);
+            String jsonObject = null;
+            if(node.has("object")) {
+                jsonObject = node.get("object").toString();
+            }
             Events event = saveMessage.getEvents();
             switch (event) {
                 case APARTMENT -> service.save(mapper.readValue(jsonObject, ApartmentDto.class));

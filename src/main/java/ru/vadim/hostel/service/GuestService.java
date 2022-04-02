@@ -55,6 +55,7 @@ public class GuestService {
         updatedGuest.setId(currentGuest.getId());
         return guestMapper.map(repository.save(updatedGuest));
     }
+
     @Cacheable
     public List<GuestDto> getGuestsFromApart(Long apartmentNumber) {
         List<Guest> guestDtoList = repository.findGuestByApartmentNumber(apartmentNumber).orElseThrow(() -> new NoEntityException(apartmentNumber));

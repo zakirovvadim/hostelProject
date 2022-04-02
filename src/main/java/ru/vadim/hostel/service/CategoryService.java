@@ -16,6 +16,7 @@ import ru.vadim.hostel.exception.NoEntityException;
 import ru.vadim.hostel.mapper.CategoryMapper;
 import ru.vadim.hostel.repository.CategoryRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -28,8 +28,7 @@ public class ApartmentActor extends UntypedActor {
 
     @Override
     public void onReceive(Object message) throws Exception {
-        if (message instanceof Apartment) {
-            Apartment apartment = (Apartment) message;
+        if (message instanceof Apartment apartment) {
             apartmentRepository.save(apartment);
         } else {
             unhandled(message);

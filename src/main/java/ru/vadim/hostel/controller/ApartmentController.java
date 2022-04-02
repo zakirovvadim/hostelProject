@@ -10,10 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-//import ru.vadim.hostel.consumer.events.DeleteEvent.DeleteEvent;
-//import ru.vadim.hostel.consumer.events.Events;
-//import ru.vadim.hostel.consumer.events.SaveUtil.SaveEvent;
-//import ru.vadim.hostel.consumer.utils.Sender;
 
 import ru.vadim.hostel.consumer.events.DeleteEvent.DeleteEvent;
 import ru.vadim.hostel.consumer.events.Events;

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import ru.vadim.hostel.exception.BrokerErrorHandler;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
@@ -25,12 +26,13 @@ public class JMSConfig {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory, BrokerErrorHandler errorHandler) {
         DefaultJmsListenerContainerFactory defaultJmsListenerContainerFactory =
                 new DefaultJmsListenerContainerFactory();
 
         defaultJmsListenerContainerFactory.setConnectionFactory(connectionFactory);
         defaultJmsListenerContainerFactory.setConcurrency("5-10");
+        defaultJmsListenerContainerFactory.setErrorHandler(errorHandler);
         return defaultJmsListenerContainerFactory;
     }
 }
